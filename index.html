@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WILDFLOWER (ByRehan)</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background: linear-gradient(to bottom, #3bb0f9, #0e1f3d);
+      font-family: 'Segoe UI', Tahoma, Fantasy, sans-serif;
+    }
+
+    /* Kontainer utama untuk layout 1280x720 */
+    #layout {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      transform-origin: top left;
+      color: white;
+      font-weight: bolder;
+    }
+
+    /* Efek fade saat awal muncul */
+    #layout {
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+       #teks {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .kata {
+      opacity: 0;
+      display: inline-block;
+      transition: opacity 0.5s ease-in;
+    }
+
+    .kata.muncul {
+      opacity: 1;
+    }
+    /* Gambar dan teks */
+    .kotak-belakang {
+      position: absolute;
+      width: 1220px;
+      height: 700px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 40px;
+      top: 620px;
+      left: 30px;
+      z-index: 0;
+    }
+
+    .gambar {
+      position: absolute;
+      top: 1000px;
+      left: 50px;
+      width: 300px;
+      border-radius: 30px;
+      z-index: 2;
+      
+    }
+
+    .posisi-teks {
+      position: absolute;
+      top: 110%;
+      left: 56%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 70px;
+    }
+
+    .kata {
+      opacity: 0;
+      display: inline-block;
+      transition: opacity 0.5s ease-in;
+    }
+    .kata.muncul { opacity: 1; }
+
+    .posisi-text {
+      position: absolute;
+      top: 160%;
+      left: 38%;
+      transform: translate(-50%, -50%);
+      font-size: 50px;
+      font-family: fantasy;
+      z-index: 3;
+    }
+
+    .popoli {
+      position: absolute;
+      top: 170%;
+      left: 32%;
+      font-family: fantasy;
+      font-size: 30px;
+      z-index: 3;
+    }
+
+    /* Tombol audio */
+    .audio-container {
+      position: absolute;
+      text-align: center;
+      bottom: -700px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+    }
+
+    .play-btn {
+      background-color: #fff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+      font-size: 22px;
+    }
+
+    .play-btn:hover {
+      background-color: #ddd;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="layout">
+    <div class="kotak-belakang"></div>
+
+    <div class="posisi-teks">
+      <div id="teks"></div>
+    </div>
+
+    <img src="https://raw.githubusercontent.com/deraihanmuhammad-ui/gambar/8854326534f2f07cdd4e852563c663b92d200ff0/memek.jpg" alt="Gambar kamu" class="gambar" />
+
+    <div class="posisi-text">Wildflower  </div>
+    <div class="popoli">Billie Eilish</div>
+
+    <div class="audio-container">
+      <button class="play-btn" id="playButton">Play</button>
+      <audio id="audio" src="https://raw.githubusercontent.com/deraihanmuhammad-ui/gambar/8854326534f2f07cdd4e852563c663b92d200ff0/ppp.mp3"></audio>
+    </div>
+  </div>
+
+  <script>
+    // ===== Animasi teks =====
+    const paragrafList = [
+      "Cause she couldn't be",
+      "More different from me",
+      "Happy and free in leather ",
+      "And I know that you love me",
+      "You don't need to remind me",
+      "Wanna put it all behind me But, Baby", 
+      "I see her in the back of my mind",
+      "All the time      ",
+      "Feels like a fever like I'm burning alive    ",
+      "Like a signnnn            ",
+      "Did I cross the line?   ",
+      "You say no one knows you so well (so)",
+      "                            ",
+    ];
+
+    const teksEl = document.getElementById("teks");
+    const playButton = document.getElementById("playButton");
+    const audio = document.getElementById("audio");
+
+    let paragrafIndex = 0;
+    let started = false;
+
+    function tampilkanParagraf() {
+      teksEl.innerHTML = "";
+      const kataArray = paragrafList[paragrafIndex].split(" ");
+      kataArray.forEach((kata, i) => {
+        const span = document.createElement("span");
+        span.className = "kata";
+        span.innerHTML = kata + "&nbsp;";
+        teksEl.appendChild(span);
+        setTimeout(() => { span.classList.add("muncul"); }, i * 300);
+      });
+
+      setTimeout(() => {
+        teksEl.style.opacity = 0;
+        setTimeout(() => {
+          paragrafIndex = (paragrafIndex + 1) % paragrafList.length;
+          teksEl.style.opacity = 1;
+          tampilkanParagraf();
+        }, 1000);
+      }, kataArray.length * 400 + 930);
+    }
+
+    playButton.addEventListener("click", () => {
+      if (!started) {
+        started = true;
+        playButton.style.display = "none";
+        audio.play();
+        tampilkanParagraf();
+      }
+    });
+
+    // ===== Scaling hanya untuk #layout =====
+    function scaleToFit() {
+      const layout = document.getElementById("layout");
+      const scale = window.innerWidth / 1280;
+      layout.style.transform = "scale(" + scale + ")";
+    }
+    window.addEventListener("resize", scaleToFit);
+    window.addEventListener("load", scaleToFit);
+  </script>
+</body>
+</html>
